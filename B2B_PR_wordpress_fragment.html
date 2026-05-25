@@ -1,0 +1,724 @@
+<!--
+  Fragment do WordPressa / Elementora.
+  Header, menu i footer zostają z motywu strony.
+
+  TODO przed publikacją:
+  1. Podmień TU_LINK_DO_FOLDERU_Z_OFERTA na właściwy link do folderu z ofertą.
+  2. Po wrzuceniu zdjęć do WordPressa podmień lokalne ścieżki `zdjęcia/...` na URL-e z biblioteki mediów.
+  3. Jeśli CSS ma trafić osobno do motywu, przenieś cały blok <style> do custom CSS.
+-->
+
+<style>
+  .os-b2b-offer {
+    --os-ink: #4f4f4f;
+    --os-heading: #5f5f5f;
+    --os-muted: #747474;
+    --os-green: #6bbbaf;
+    --os-green-dark: #3d7a6d;
+    --os-pale: #f1f8f6;
+    --os-warm: #fbf7f2;
+    --os-line: #dbe9e5;
+    --os-white: #fff;
+    --os-max: 1180px;
+    color: var(--os-ink);
+    font-family: Montserrat, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  .os-b2b-offer * {
+    box-sizing: border-box;
+  }
+
+  .os-b2b-offer a {
+    color: inherit;
+  }
+
+  .os-b2b-wrap {
+    width: min(var(--os-max), calc(100% - 32px));
+    margin: 0 auto;
+  }
+
+  .os-b2b-section {
+    padding: 74px 0;
+  }
+
+  .os-b2b-section.is-pale {
+    background: var(--os-pale);
+  }
+
+  .os-b2b-section.is-warm {
+    background: var(--os-warm);
+  }
+
+  .os-b2b-eyebrow {
+    margin: 0 0 14px;
+    color: var(--os-green-dark);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+  }
+
+  .os-b2b-offer h1,
+  .os-b2b-offer h2,
+  .os-b2b-offer h3,
+  .os-b2b-offer p {
+    margin-top: 0;
+  }
+
+  .os-b2b-offer h1 {
+    max-width: 760px;
+    color: var(--os-heading);
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: clamp(40px, 5vw, 64px);
+    font-weight: 700;
+    line-height: 1.18;
+    margin-bottom: 22px;
+  }
+
+  .os-b2b-offer h2 {
+    color: var(--os-heading);
+    font-family: Montserrat, Arial, sans-serif;
+    font-size: clamp(30px, 3.2vw, 42px);
+    font-weight: 600;
+    line-height: 1.25;
+    margin-bottom: 16px;
+  }
+
+  .os-b2b-offer h3 {
+    color: var(--os-heading);
+    font-family: Montserrat, Arial, sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.35;
+    margin-bottom: 10px;
+  }
+
+  .os-b2b-lead {
+    max-width: 740px;
+    color: var(--os-muted);
+    font-size: 18px;
+    line-height: 1.75;
+    margin-bottom: 0;
+  }
+
+  .os-b2b-hero {
+    padding: 58px 0 74px;
+  }
+
+  .os-b2b-hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, .95fr) minmax(360px, .8fr);
+    gap: 48px;
+    align-items: center;
+  }
+
+  .os-b2b-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 30px;
+  }
+
+  .os-b2b-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    padding: 12px 22px;
+    border: 1px solid var(--os-green);
+    background: var(--os-green);
+    color: #000;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: opacity .2s ease, transform .2s ease;
+  }
+
+  .os-b2b-button:hover,
+  .os-b2b-button:focus {
+    color: #000;
+    opacity: .86;
+    transform: translateY(-1px);
+  }
+
+  .os-b2b-button.is-secondary {
+    background: transparent;
+    color: var(--os-green-dark);
+    border-color: var(--os-green);
+  }
+
+  .os-b2b-media {
+    margin: 0;
+    background: var(--os-white);
+    border: 1px solid var(--os-line);
+    padding: 18px;
+  }
+
+  .os-b2b-media img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 520px;
+    object-fit: contain;
+    background: var(--os-white);
+  }
+
+  .os-b2b-caption {
+    margin-top: 14px;
+    color: var(--os-muted);
+    font-size: 13px;
+    line-height: 1.55;
+  }
+
+  .os-b2b-section-head {
+    display: grid;
+    grid-template-columns: minmax(0, .9fr) minmax(280px, .55fr);
+    gap: 40px;
+    align-items: end;
+    margin-bottom: 34px;
+  }
+
+  .os-b2b-section-head p:last-child {
+    color: var(--os-muted);
+    margin-bottom: 0;
+  }
+
+  .os-b2b-card-grid,
+  .os-b2b-product-grid,
+  .os-b2b-process,
+  .os-b2b-faq {
+    display: grid;
+    gap: 18px;
+  }
+
+  .os-b2b-product-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .os-b2b-card-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .os-b2b-process {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    counter-reset: os-step;
+  }
+
+  .os-b2b-faq {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .os-b2b-card,
+  .os-b2b-product,
+  .os-b2b-step,
+  .os-b2b-qa,
+  .os-b2b-contact-panel {
+    background: var(--os-white);
+    border: 1px solid var(--os-line);
+    padding: 26px;
+  }
+
+  .os-b2b-card p,
+  .os-b2b-product p,
+  .os-b2b-step p,
+  .os-b2b-qa p,
+  .os-b2b-contact-panel p {
+    color: var(--os-muted);
+    margin-bottom: 0;
+  }
+
+  .os-b2b-list {
+    display: grid;
+    gap: 8px;
+    list-style: none;
+    margin: 18px 0 0;
+    padding: 0;
+  }
+
+  .os-b2b-list li {
+    position: relative;
+    padding-left: 20px;
+  }
+
+  .os-b2b-list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: .72em;
+    width: 7px;
+    height: 7px;
+    background: var(--os-green);
+  }
+
+  .os-b2b-product {
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .os-b2b-product figure {
+    margin: 0;
+    padding: 14px;
+    background: #fff;
+    border-bottom: 1px solid var(--os-line);
+  }
+
+  .os-b2b-product img {
+    display: block;
+    width: 100%;
+    height: 210px;
+    object-fit: contain;
+    background: var(--os-pale);
+  }
+
+  .os-b2b-product-body {
+    padding: 22px;
+  }
+
+  .os-b2b-placeholder {
+    display: grid;
+    place-items: center;
+    height: 210px;
+    padding: 18px;
+    background: var(--os-pale);
+    color: var(--os-green-dark);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    line-height: 1.5;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .os-b2b-step {
+    counter-increment: os-step;
+  }
+
+  .os-b2b-step::before {
+    content: "0" counter(os-step);
+    display: block;
+    color: var(--os-green-dark);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .16em;
+    margin-bottom: 24px;
+  }
+
+  .os-b2b-offer-box {
+    display: grid;
+    grid-template-columns: minmax(0, .82fr) minmax(300px, .55fr);
+    gap: 28px;
+    align-items: center;
+    background: var(--os-white);
+    border: 1px solid var(--os-line);
+    padding: 34px;
+  }
+
+  .os-b2b-offer-box p {
+    color: var(--os-muted);
+    margin-bottom: 0;
+  }
+
+  .os-b2b-realization-grid {
+    display: grid;
+    grid-template-columns: 1.05fr .95fr;
+    gap: 18px;
+    align-items: stretch;
+  }
+
+  .os-b2b-realization-main,
+  .os-b2b-realization-stack {
+    display: grid;
+    gap: 18px;
+  }
+
+  .os-b2b-realization {
+    min-height: 240px;
+    background: var(--os-white);
+    border: 1px solid var(--os-line);
+    padding: 22px;
+  }
+
+  .os-b2b-realization.is-large {
+    min-height: 500px;
+  }
+
+  .os-b2b-realization p {
+    color: var(--os-muted);
+    margin-bottom: 0;
+  }
+
+  .os-b2b-realization img {
+    display: block;
+    width: 100%;
+    max-height: 360px;
+    object-fit: contain;
+    margin-bottom: 18px;
+    background: var(--os-pale);
+  }
+
+  .os-b2b-contact {
+    display: grid;
+    grid-template-columns: minmax(0, .9fr) minmax(320px, .55fr);
+    gap: 42px;
+    align-items: start;
+  }
+
+  .os-b2b-contact-line {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--os-line);
+  }
+
+  .os-b2b-contact-line:last-child {
+    border-bottom: 0;
+  }
+
+  .os-b2b-contact-line span {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--os-green-dark);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+  }
+
+  .os-b2b-contact-line a {
+    color: var(--os-heading);
+    font-size: 20px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  @media (max-width: 980px) {
+    .os-b2b-hero-grid,
+    .os-b2b-section-head,
+    .os-b2b-offer-box,
+    .os-b2b-realization-grid,
+    .os-b2b-contact {
+      grid-template-columns: 1fr;
+    }
+
+    .os-b2b-card-grid,
+    .os-b2b-product-grid,
+    .os-b2b-process,
+    .os-b2b-faq {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .os-b2b-section {
+      padding: 56px 0;
+    }
+
+    .os-b2b-hero {
+      padding-top: 36px;
+    }
+
+    .os-b2b-card-grid,
+    .os-b2b-product-grid,
+    .os-b2b-process,
+    .os-b2b-faq {
+      grid-template-columns: 1fr;
+    }
+
+    .os-b2b-button {
+      width: 100%;
+    }
+
+    .os-b2b-card,
+    .os-b2b-step,
+    .os-b2b-qa,
+    .os-b2b-contact-panel,
+    .os-b2b-offer-box {
+      padding: 22px;
+    }
+  }
+</style>
+
+<div class="os-b2b-offer">
+  <section class="os-b2b-hero">
+    <div class="os-b2b-wrap os-b2b-hero-grid">
+      <div>
+        <p class="os-b2b-eyebrow">Oferta dla firm, marek i agencji</p>
+        <h1>Planery, organizery i papiernicze zestawy, które zostają z odbiorcami na dłużej.</h1>
+        <p class="os-b2b-lead">Tworzymy estetyczne i praktyczne produkty do paczek PR, prezentów firmowych, welcome packów, eventów i kreatywnych wysyłek. Pomagamy dobrać format, personalizację i zestaw tak, żeby całość była spójna z marką i naprawdę użyteczna po rozpakowaniu.</p>
+        <div class="os-b2b-actions">
+          <a class="os-b2b-button" href="mailto:kontakt@ogarniamsie.pl?subject=Zapytanie%20o%20ofert%C4%99%20dla%20firm&body=Dzie%C5%84%20dobry%2C%0A%0AChc%C4%99%20zapyta%C4%87%20o%20ofert%C4%99%20dla%20firm.%0AOkazja%3A%0ALiczba%20sztuk%3A%0ATermin%3A%0AProdukt%20lub%20pomys%C5%82%3A%0A%0APozdrawiam">Napisz w sprawie wyceny</a>
+          <a class="os-b2b-button is-secondary" href="TU_LINK_DO_FOLDERU_Z_OFERTA" target="_blank" rel="noopener">Zobacz możliwości</a>
+        </div>
+      </div>
+
+      <figure class="os-b2b-media">
+        <img src="zdjęcia/organizer z personalizacją inicjlałami.jpg" alt="Organizer OgarniamSię z personalizacją inicjałami">
+        <figcaption class="os-b2b-caption">Zdjęcie produktowe pokazujemy w całości. Jeśli zostanie podmienione, warto użyć fotografii konkretnej realizacji lub zestawu.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="os-b2b-section is-pale">
+    <div class="os-b2b-wrap">
+      <div class="os-b2b-section-head">
+        <div>
+          <p class="os-b2b-eyebrow">Dla kogo</p>
+          <h2>Dla projektów, w których liczy się wrażenie i codzienna użyteczność.</h2>
+        </div>
+        <p>Nie pozycjonujemy tej oferty jako klasycznych gadżetów reklamowych. To produkty papiernicze i organizacyjne, które mogą stać się częścią doświadczenia marki, prezentu albo wydarzenia.</p>
+      </div>
+
+      <div class="os-b2b-card-grid">
+        <article class="os-b2b-card">
+          <h3>Marki i działy marketingu</h3>
+          <p>Do premier, wysyłek kreatywnych, kampanii sezonowych i prezentów dla partnerów.</p>
+        </article>
+        <article class="os-b2b-card">
+          <h3>Agencje PR i eventowe</h3>
+          <p>Do paczek PR, materiałów dla gości wydarzeń i spójnych zestawów dla twórców.</p>
+        </article>
+        <article class="os-b2b-card">
+          <h3>HR i employer branding</h3>
+          <p>Do welcome packów, onboardingów, prezentów dla zespołu i akcji wewnętrznych.</p>
+        </article>
+        <article class="os-b2b-card">
+          <h3>Firmy szukające prezentu</h3>
+          <p>Gdy upominek ma być estetyczny, praktyczny i mniej przypadkowy niż standardowy gadżet.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="os-b2b-section">
+    <div class="os-b2b-wrap">
+      <div class="os-b2b-section-head">
+        <div>
+          <p class="os-b2b-eyebrow">Najczęściej wybierane</p>
+          <h2>Produkty dopasowane do typu realizacji.</h2>
+        </div>
+        <p>Każdy typ produktu pokazujemy właściwym zdjęciem. Jeśli nie mamy jeszcze gotowej fotografii realizacji, zostawiamy miejsce na podmianę zamiast używać przypadkowego zdjęcia.</p>
+      </div>
+
+      <div class="os-b2b-product-grid">
+        <article class="os-b2b-product">
+          <figure>
+            <img src="zdjęcia/planer na spirali.jpg" alt="Planer na spirali OgarniamSię">
+          </figure>
+          <div class="os-b2b-product-body">
+            <h3>Planery na spirali</h3>
+            <p>Dobry wybór do kampanii, prezentów dla zespołu i projektów, w których liczy się codzienna praca z produktem.</p>
+          </div>
+        </article>
+
+        <article class="os-b2b-product">
+          <figure>
+            <img src="zdjęcia/planer książkowy.jpg" alt="Planer książkowy OgarniamSię">
+          </figure>
+          <div class="os-b2b-product-body">
+            <h3>Planery książkowe</h3>
+            <p>Bardziej klasyczny, elegancki format do prezentów firmowych, paczek premium i projektów z personalizowaną okładką.</p>
+          </div>
+        </article>
+
+        <article class="os-b2b-product">
+          <figure>
+            <img src="zdjęcia/orgarnizer 2.jpg" alt="Organizer OgarniamSię">
+          </figure>
+          <div class="os-b2b-product-body">
+            <h3>Organizery</h3>
+            <p>Trwałe, wielosezonowe produkty do planowania, które dobrze sprawdzają się jako bardziej osobisty prezent.</p>
+          </div>
+        </article>
+
+        <article class="os-b2b-product">
+          <figure>
+            <img src="https://ogarniamsie.pl/wp-content/uploads/2018/01/podkładka-na-biurko-kalendarz-kwiaty.jpeg" alt="Biuwar OgarniamSię">
+          </figure>
+          <div class="os-b2b-product-body">
+            <h3>Biuwary i podkładki</h3>
+            <p>Praktyczne na biurko, do pracy zespołowej, recepcji, szkoleń, konferencji albo paczek firmowych.</p>
+          </div>
+        </article>
+
+        <article class="os-b2b-product">
+          <figure>
+            <div class="os-b2b-placeholder">TODO: zdjęcie zestawu dodatków / PR boxa</div>
+          </figure>
+          <div class="os-b2b-product-body">
+            <h3>Zestawy i dodatki</h3>
+            <p>Notesy, listy zadań, zakładki, naklejki i akcesoria, które domykają paczkę lub prezent.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="os-b2b-section is-warm">
+    <div class="os-b2b-wrap">
+      <div class="os-b2b-section-head">
+        <div>
+          <p class="os-b2b-eyebrow">Zastosowania</p>
+          <h2>Kiedy taka oferta ma najwięcej sensu?</h2>
+        </div>
+        <p>Najłatwiej zacząć od okazji i odbiorcy. Na tej podstawie można dobrać produkt, poziom personalizacji i zakres dodatków.</p>
+      </div>
+
+      <div class="os-b2b-card-grid">
+        <article class="os-b2b-card">
+          <h3>Paczki PR</h3>
+          <p>Produkty, które wyglądają dobrze w wysyłce i zostają z odbiorcą po zakończeniu kampanii.</p>
+        </article>
+        <article class="os-b2b-card">
+          <h3>Premiery i eventy</h3>
+          <p>Materiały dla gości, partnerów albo twórców, dopasowane do charakteru wydarzenia.</p>
+        </article>
+        <article class="os-b2b-card">
+          <h3>Welcome packi</h3>
+          <p>Praktyczny element zestawu powitalnego dla nowych osób w zespole lub społeczności marki.</p>
+        </article>
+        <article class="os-b2b-card">
+          <h3>Prezenty firmowe</h3>
+          <p>Na święta, jubileusz, podziękowanie, akcję wewnętrzną albo prezent dla partnerów biznesowych.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="os-b2b-section">
+    <div class="os-b2b-wrap">
+      <div class="os-b2b-section-head">
+        <div>
+          <p class="os-b2b-eyebrow">Jak wygląda współpraca</p>
+          <h2>Od pomysłu do gotowej realizacji.</h2>
+        </div>
+        <p>Nie trzeba znać wszystkich technicznych szczegółów. Wystarczy opisać okazję, liczbę sztuk, termin i to, jaki efekt ma dać produkt.</p>
+      </div>
+
+      <div class="os-b2b-process">
+        <article class="os-b2b-step">
+          <h3>Opisujesz potrzebę</h3>
+          <p>Piszesz, dla kogo jest projekt, na kiedy, ile sztuk rozważasz i jaki produkt chodzi Ci po głowie.</p>
+        </article>
+        <article class="os-b2b-step">
+          <h3>Dobieramy wariant</h3>
+          <p>Podpowiadamy produkt, format, zakres personalizacji i elementy, które mają sens przy danym celu.</p>
+        </article>
+        <article class="os-b2b-step">
+          <h3>Przygotowujemy wycenę</h3>
+          <p>Wycena zależy od nakładu, produktu, personalizacji, materiałów i terminu realizacji.</p>
+        </article>
+        <article class="os-b2b-step">
+          <h3>Realizujemy zamówienie</h3>
+          <p>Po akceptacji projektu i szczegółów produkcja trafia do realizacji, a gotowe produkty do wysyłki.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="os-b2b-section is-pale">
+    <div class="os-b2b-wrap">
+      <div class="os-b2b-offer-box">
+        <div>
+          <p class="os-b2b-eyebrow">Oferta i wycena</p>
+          <h2>Zamiast tabeli cen: aktualny folder z możliwościami.</h2>
+          <p>Ceny i terminy zależą od produktu, nakładu, personalizacji i dostępności materiałów, dlatego nie pokazujemy przypadkowej tabeli na stronie. Najlepiej zajrzeć do folderu z ofertą lub napisać do nas po indywidualną wycenę.</p>
+        </div>
+        <div class="os-b2b-actions">
+          <a class="os-b2b-button" href="TU_LINK_DO_FOLDERU_Z_OFERTA" target="_blank" rel="noopener">Zobacz możliwości</a>
+          <a class="os-b2b-button is-secondary" href="mailto:kontakt@ogarniamsie.pl?subject=Zapytanie%20o%20wycen%C4%99%20dla%20firm">Napisz w sprawie wyceny</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="os-b2b-section">
+    <div class="os-b2b-wrap">
+      <div class="os-b2b-section-head">
+        <div>
+          <p class="os-b2b-eyebrow">Realizacje</p>
+          <h2>Miejsce na zdjęcia, które naprawdę pokazują ofertę.</h2>
+        </div>
+        <p>Tu warto dodać fotografie konkretnych realizacji: paczek, produktów z personalizacją, biuwarów, organizerów i zestawów. Bez przypadkowych kadrów niedopasowanych do opisu.</p>
+      </div>
+
+      <div class="os-b2b-realization-grid">
+        <article class="os-b2b-realization os-b2b-realization-main is-large">
+          <img src="zdjęcia/planer na spirali.jpg" alt="Planer na spirali OgarniamSię">
+          <h3>Planery na spirali do codziennego używania</h3>
+          <p>Format dobry do prezentów firmowych, welcome packów i projektów, w których produkt ma zostać z odbiorcą na dłużej.</p>
+        </article>
+        <div class="os-b2b-realization-stack">
+          <article class="os-b2b-realization">
+            <img src="zdjęcia/organizer z personalizacją inicjlałami.jpg" alt="Personalizowany organizer z inicjałami">
+            <h3>Personalizacja okładki</h3>
+            <p>Detal, który sprawia, że produkt jest bardziej osobisty i prezentowy.</p>
+          </article>
+          <article class="os-b2b-realization">
+            <img src="zdjęcia/orgarnizer 2.jpg" alt="Organizer OgarniamSię">
+            <h3>Organizer jako element zestawu</h3>
+            <p>Do paczek kreatywnych, prezentów dla zespołu albo eleganckich wysyłek.</p>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="os-b2b-section is-warm">
+    <div class="os-b2b-wrap">
+      <div class="os-b2b-section-head">
+        <div>
+          <p class="os-b2b-eyebrow">FAQ</p>
+          <h2>Najczęstsze pytania przed kontaktem.</h2>
+        </div>
+        <p>Krótkie odpowiedzi mają pomóc komuś wysłać zapytanie nawet wtedy, gdy nie ma jeszcze gotowego briefu.</p>
+      </div>
+
+      <div class="os-b2b-faq">
+        <article class="os-b2b-qa">
+          <h3>Czy muszę wiedzieć, jaki produkt chcę zamówić?</h3>
+          <p>Nie. Możesz napisać, z jakiej okazji przygotowujesz zamówienie, dla kogo i w jakiej liczbie sztuk. Doradzimy sensowny kierunek.</p>
+        </article>
+        <article class="os-b2b-qa">
+          <h3>Czy przygotowujecie produkty z logo?</h3>
+          <p>Tak, ale nie ograniczamy się do samego logo. Możemy myśleć o okładce, kolorystyce, dedykacji, dodatkach i spójności całego zestawu.</p>
+        </article>
+        <article class="os-b2b-qa">
+          <h3>Czy realizujecie mniejsze zamówienia?</h3>
+          <p>To zależy od produktu i zakresu personalizacji. Najlepiej napisać z orientacyjną liczbą sztuk, a my sprawdzimy możliwości.</p>
+        </article>
+        <article class="os-b2b-qa">
+          <h3>Czy mogę dostać wycenę przed decyzją?</h3>
+          <p>Tak. Do przygotowania wyceny przyda się liczba sztuk, termin, typ produktu i informacja, czy projekt graficzny jest gotowy.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="os-b2b-section" id="kontakt">
+    <div class="os-b2b-wrap os-b2b-contact">
+      <div>
+        <p class="os-b2b-eyebrow">Kontakt</p>
+        <h2>Napisz w sprawie oferty dla firm.</h2>
+        <p class="os-b2b-lead">W mailu wystarczy kilka informacji: okazja, liczba sztuk, termin, odbiorcy i produkt, który rozważasz. Jeśli masz moodboard, identyfikację wizualną albo gotowy projekt, możesz od razu go załączyć.</p>
+        <div class="os-b2b-actions">
+          <a class="os-b2b-button" href="mailto:kontakt@ogarniamsie.pl?subject=Zapytanie%20o%20ofert%C4%99%20dla%20firm&body=Dzie%C5%84%20dobry%2C%0A%0AChc%C4%99%20zapyta%C4%87%20o%20ofert%C4%99%20dla%20firm.%0AOkazja%3A%0ALiczba%20sztuk%3A%0ATermin%3A%0AProdukt%20lub%20pomys%C5%82%3A%0A%0APozdrawiam">Napisz w sprawie wyceny</a>
+        </div>
+      </div>
+
+      <aside class="os-b2b-contact-panel">
+        <div class="os-b2b-contact-line">
+          <span>Email</span>
+          <a href="mailto:kontakt@ogarniamsie.pl">kontakt@ogarniamsie.pl</a>
+        </div>
+        <div class="os-b2b-contact-line">
+          <span>Warto dopisać</span>
+          <p>liczbę sztuk, termin, odbiorców, typ produktu, zakres personalizacji i informację, czy projekt graficzny jest gotowy.</p>
+        </div>
+        <div class="os-b2b-contact-line">
+          <span>Materiały</span>
+          <p>Folder z ofertą będzie dostępny pod przyciskiem “Zobacz możliwości”.</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+</div>
